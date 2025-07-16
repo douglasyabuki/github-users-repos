@@ -1,7 +1,8 @@
 from datetime import datetime, timezone
 import asyncio
-from database import load_users, update_user
+from database import load_users, get_user, update_user
 from services.github_user_repositories import fetch_user_repositories
+from models import StoredUser
 
 GITHUB_REQUEST_LIMIT_PER_HOUR = 60
 MAX_UPDATES_PER_RUN = 55
@@ -24,10 +25,9 @@ async def update_outdated_users():
     today = now.date()
 
     outdated = []
-    for username, data in users_data.items():
-        updated_at_str = data.get("updated_at")
+    for username, user in users_data.items():
         try:
-            updated_at = datetime.fromisoformat(updated_at_str)
+            updated_at = datetime.fromisoformat(user.updated_at)
             if updated_at.date() < today:
                 outdated.append((username, updated_at))
         except Exception:
@@ -57,11 +57,14 @@ async def fetch_and_update_user(username: str):
         print(f"[updater] Failed to fetch {username}")
         return
 
-    created_at = load_users().get(username, {}).get("created_at", now)
-    update_user(username, {
-        "created_at": created_at,
-        "updated_at": now,
-        "repositories": repos
-    })
+    existing_user = get_user(username)
+    created_at = existing_user.created_at if existing_user else now
 
+    updated_record = StoredUser(
+        created_at=created_at,
+        updated_at=now,
+        repositories=repos
+    )
+
+    update_user(username, updated_record)
     print(f"[updater] Updated {username}")

@@ -6,7 +6,7 @@ from services.github_user_repositories import fetch_user_repositories
 from services.self_updater import hourly_update_loop
 from datetime import datetime, timezone
 from database import get_user, update_user
-from models import UserResponse
+from models import UserResponse, StoredUser
 import asyncio
 
 app = FastAPI()
@@ -30,22 +30,24 @@ async def get_user_repos(username: str) -> UserResponse:
     
     now = datetime.now(timezone.utc).isoformat()
     existing_user = get_user(username)
-    created_at = existing_user.get("created_at") if existing_user else now
+    created_at = existing_user.created_at if existing_user else now
 
-    is_new_user = update_user(username, {
-        "created_at": created_at,
-        "updated_at": now,
-        "repositories": repos
-    })
+    stored_user = StoredUser(
+        created_at=created_at,
+        updated_at=now,
+        repositories=repos
+    )
 
-    return {
-        "username": username,
-        "created_at": created_at,
-        "updated_at": now,
-        "repositories": repos,
-        "is_new_user": is_new_user,
-        "total_repositories": len(repos)
-    }
+    is_new_user = update_user(username, stored_user)
+
+    return UserResponse(
+        username=username,
+        created_at=created_at,
+        updated_at=now,
+        repositories=repos,
+        is_new_user=is_new_user,
+        total_repositories=len(repos)
+    )
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
