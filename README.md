@@ -8,13 +8,13 @@ A simple app to fetch and store public GitHub repositories for a given user.
 
 ### 🛠 Requirements
 
-- [ ] GitHub Integration  
-  - [ ] Use `GET https://api.github.com/users/{username}/repos`
-  - [ ] Use only these fields from each repo:
-    - [ ] `name`
-    - [ ] `html_url`
-    - [ ] `description`
-    - [ ] `language`
+- [x] GitHub Integration  
+  - [x] Use `GET https://api.github.com/users/{username}/repos`
+  - [x] Use only these fields from each repo:
+    - [x] `name`
+    - [x] `html_url`
+    - [x] `description`
+    - [x] `language`
   - [ ] Handle GitHub's unauthenticated rate limit (60 requests/hour)
 
 ---
@@ -30,7 +30,7 @@ A simple app to fetch and store public GitHub repositories for a given user.
 ### 🌐 Web Server
 
 - [ ] Receive requests from the frontend
-- [ ] Fetch repos from GitHub API
+- [x] Fetch repos from GitHub API
 - [ ] Extract required fields from **first 5 repositories**
 - [ ] Store data (file, no-SQL, or your choice)
 - [ ] If user exists:
@@ -38,7 +38,7 @@ A simple app to fetch and store public GitHub repositories for a given user.
 - [ ] If user does not exist:
   - [ ] Create a new record
 - [ ] Respond with:
-  - [ ] Repo data (4 fields per repo)
+  - [x] Repo data (4 fields per repo)
   - [ ] Whether the user is new or existing
 
 ---
