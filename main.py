@@ -1,6 +1,7 @@
-def main():
-    print("Hello from github-users-repos!")
+from fastapi import FastAPI
 
+app = FastAPI()
 
-if __name__ == "__main__":
-    main()
+@app.get("/api/health")
+async def health_check():
+    return {"status": "ok"}
