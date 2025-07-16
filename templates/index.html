@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Repository Tracker</title>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>GitHub Repository Tracker</h1>
+        <p>Enter a GitHub username to view their 5 latest repositories</p>
+        <div class="api-docs">
+          <a href="/docs" target="_blank">API Documentation</a>
+        </div>
+      </header>
+
+      <main>
+        <form id="userForm" class="search-form">
+          <div class="input-group">
+            <input
+              type="text"
+              id="username"
+              placeholder="Enter GitHub username..."
+              required
+              autocomplete="off"
+            />
+            <button type="submit" id="searchBtn">
+              <span class="btn-text">Search</span>
+              <span class="btn-loading" style="display: none"
+                >Searching...</span
+              >
+            </button>
+          </div>
+        </form>
+
+        <div id="results" class="results-container"></div>
+      </main>
+    </div>
+  </body>
+</html>
