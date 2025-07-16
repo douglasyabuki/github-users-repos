@@ -6,11 +6,17 @@ from typing import Any
 from services.github_user_repositories import fetch_user_repositories
 from datetime import datetime, timezone
 from database import get_user, update_user
+from services.self_updater import hourly_update_loop
+import asyncio
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.on_event("startup")
+async def start_scheduler():
+    asyncio.create_task(hourly_update_loop())
 
 @app.get("/api/health")
 async def health_check():

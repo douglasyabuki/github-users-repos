@@ -15,7 +15,7 @@ A simple app to fetch and store public GitHub repositories for a given user.
     - [x] `html_url`
     - [x] `description`
     - [x] `language`
-  - [ ] Handle GitHub's unauthenticated rate limit (60 requests/hour)
+  - [x] Handle GitHub's unauthenticated rate limit (60 requests/hour)
 
 ---
 
@@ -45,4 +45,4 @@ A simple app to fetch and store public GitHub repositories for a given user.
 
 ### 🔁 Data Refresh
 
-- [ ] Background task to refresh data regularly for all stored users
+- [x] Background task to refresh data regularly for all stored users
