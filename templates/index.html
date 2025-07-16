@@ -36,6 +36,9 @@
 <script>
   const form = document.getElementById("userForm");
   const usernameInput = document.getElementById("username");
+  const searchBtn = document.getElementById("searchBtn");
+  const btnText = document.querySelector(".btn-text");
+  const btnLoading = document.querySelector(".btn-loading");
   const resultsContainer = document.getElementById("results");
 
   form.addEventListener("submit", async (e) => {
@@ -44,10 +47,15 @@
     const username = usernameInput.value.trim();
     if (!username) return;
 
+    searchBtn.disabled = true;
+    btnText.style.display = "none";
+    btnLoading.style.display = "inline";
     resultsContainer.innerHTML = "";
 
     try {
-      const response = await fetch(`/api/user/${encodeURIComponent(username)}`);
+      const response = await fetch(
+        `/api/user/${encodeURIComponent(username)}`
+      );
       const data = await response.json();
 
       if (!response.ok) {
@@ -57,20 +65,40 @@
       displayResults(username, data);
     } catch (error) {
       displayError(error.message);
+    } finally {
+      searchBtn.disabled = false;
+      btnText.style.display = "inline";
+      btnLoading.style.display = "none";
     }
   });
 
   function displayResults(username, data) {
-    const { repositories } = data;
+    const { created_at, updated_at, repositories, is_new_user } = data;
+
+    const lastUpdated = updated_at
+      ? new Date(updated_at).toLocaleString()
+      : created_at
+        ? new Date(created_at).toLocaleString()
+        : "N/A";
+
+    const statusMessage = is_new_user
+      ? '<span class="status new">New user added to database</span>'
+      : '<span class="status updated">Existing user data updated</span>';
 
     const resultsHTML = `
+      <div class="results-header">
+        <h2>Results for ${username}</h2>
+        ${statusMessage}
+        <p class="last-updated">Last updated: ${lastUpdated}</p>
+      </div>
       <div class="repositories">
         ${repositories
         .map(
           (repo) => `
             <div class="repository-card">
               <h3 class="repo-name">
-                <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
+                <a href="${repo.html_url
+            }" target="_blank" rel="noopener noreferrer">
                   ${repo.name}
                 </a>
               </h3>

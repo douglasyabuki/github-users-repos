@@ -104,6 +104,19 @@ header p {
   min-height: 100px;
 }
 
+.results-header {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.results-header h2 {
+  color: #24292e;
+  margin-bottom: 10px;
+}
+
 .last-updated {
   color: #586069;
   font-size: 0.9rem;

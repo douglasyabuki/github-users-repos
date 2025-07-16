@@ -23,7 +23,7 @@ A simple app to fetch and store public GitHub repositories for a given user.
 
 - [x] Input form to submit a GitHub username
 - [x] Display the response from the web server
-- [ ] Keep UI clean or styled (be ready to explain design choices)
+- [x] Keep UI clean or styled (be ready to explain design choices)
 
 ---
 
