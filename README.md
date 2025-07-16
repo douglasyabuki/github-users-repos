@@ -21,17 +21,17 @@ A simple app to fetch and store public GitHub repositories for a given user.
 
 ### 🖼 Frontend
 
-- [ ] Input form to submit a GitHub username
-- [ ] Display the response from the web server
+- [x] Input form to submit a GitHub username
+- [x] Display the response from the web server
 - [ ] Keep UI clean or styled (be ready to explain design choices)
 
 ---
 
 ### 🌐 Web Server
 
-- [ ] Receive requests from the frontend
+- [x] Receive requests from the frontend
 - [x] Fetch repos from GitHub API
-- [ ] Extract required fields from **first 5 repositories**
+- [x] Extract required fields from **first 5 repositories**
 - [ ] Store data (file, no-SQL, or your choice)
 - [ ] If user exists:
   - [ ] Update the record  

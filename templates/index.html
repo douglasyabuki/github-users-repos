@@ -1,42 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GitHub Repository Tracker</title>
-    <link rel="stylesheet" href="static/style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <h1>GitHub Repository Tracker</h1>
-        <p>Enter a GitHub username to view their 5 latest repositories</p>
-        <!-- <div class="api-docs">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Repository Tracker</title>
+  <link rel="stylesheet" href="static/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>GitHub Repository Tracker</h1>
+      <p>Enter a GitHub username to view their 5 latest repositories</p>
+      <!-- <div class="api-docs">
           <a href="/docs" target="_blank">API Documentation</a>
         </div> -->
-      </header>
+    </header>
 
-      <main>
-        <form id="userForm" class="search-form">
-          <div class="input-group">
-            <input
-              type="text"
-              id="username"
-              placeholder="Enter GitHub username..."
-              required
-              autocomplete="off"
-            />
-            <button type="submit" id="searchBtn">
-              <span class="btn-text">Search</span>
-              <span class="btn-loading" style="display: none"
-                >Searching...</span
-              >
-            </button>
-          </div>
-        </form>
+    <main>
+      <form id="userForm" class="search-form">
+        <div class="input-group">
+          <input type="text" id="username" placeholder="Enter GitHub username..." required autocomplete="off" />
+          <button type="submit" id="searchBtn">
+            <span class="btn-text">Search</span>
+            <span class="btn-loading" style="display: none">Searching...</span>
+          </button>
+        </div>
+      </form>
 
-        <div id="results" class="results-container"></div>
-      </main>
-    </div>
-  </body>
+      <div id="results" class="results-container"></div>
+    </main>
+  </div>
+</body>
+<script>
+  const form = document.getElementById("userForm");
+  const usernameInput = document.getElementById("username");
+  const resultsContainer = document.getElementById("results");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const username = usernameInput.value.trim();
+    if (!username) return;
+
+    resultsContainer.innerHTML = "";
+
+    try {
+      const response = await fetch(`/api/user/${encodeURIComponent(username)}`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || "Failed to fetch repositories");
+      }
+
+      displayResults(username, data);
+    } catch (error) {
+      displayError(error.message);
+    }
+  });
+
+  function displayResults(username, data) {
+    const { repositories } = data;
+
+    const resultsHTML = `
+      <div class="repositories">
+        ${repositories
+        .map(
+          (repo) => `
+            <div class="repository-card">
+              <h3 class="repo-name">
+                <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">
+                  ${repo.name}
+                </a>
+              </h3>
+              <p class="repo-description">
+                ${repo.description || "No description available"}
+              </p>
+              <div class="repo-meta">
+                <span class="language ${repo.language ? "has-language" : ""}">
+                  ${repo.language || "Unknown"}
+                </span>
+              </div>
+            </div>
+          `
+        )
+        .join("")}
+      </div>
+    `;
+
+    resultsContainer.innerHTML = resultsHTML;
+  }
+
+  function displayError(message) {
+    resultsContainer.innerHTML = `
+      <div class="error-message">
+        <h3>Error</h3>
+        <p>${message}</p>
+      </div>
+    `;
+  }
+</script>
+
 </html>
