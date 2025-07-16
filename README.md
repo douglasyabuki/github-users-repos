@@ -3,6 +3,41 @@
 A simple app to fetch and store public GitHub repositories for a given user.
 
 ---
+# 🐳 How to Run This App with Docker
+## 1. Build the Docker Image
+From the root of the project (where Dockerfile is located), run:
+
+```
+docker build -t github-user-repos .
+```
+
+This builds the image and names it github-user-repos.
+
+## 2. Run the Container
+Run the container and expose port 8000 to your local machine:
+```
+docker run -p 8000:8000 github-user-repos
+```
+Or run in detached mode:
+```
+docker run -d -p 8000:8000 github-user-repos
+```
+
+Now the app is accessible at:
+```
+http://localhost:8000
+```
+
+## 3. Test the API
+Check health:
+```
+curl http://localhost:8000/api/health
+```
+
+Test in browser:
+```
+http://localhost:8000/
+```
 
 ## ✅ Project Checklist
 
