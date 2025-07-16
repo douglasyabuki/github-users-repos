@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from typing import Any
 from services.github_user_repositories import fetch_user_repositories
 from datetime import datetime, timezone
+from database import get_user, update_user
 
 app = FastAPI()
 
@@ -26,11 +27,18 @@ async def get_user_repos(username: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail="GitHub user not found or fetch failed")
     
     now = datetime.now(timezone.utc).isoformat()
-    is_new_user = True
-    
+    existing_user = get_user(username)
+    created_at = existing_user.get("created_at") if existing_user else now
+
+    is_new_user = update_user(username, {
+        "created_at": created_at,
+        "updated_at": now,
+        "repositories": repos
+    })
+
     return {
         "username": username,
-        "created_at": now,
+        "created_at": created_at,
         "updated_at": now,
         "repositories": repos,
         "is_new_user": is_new_user,

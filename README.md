@@ -32,14 +32,14 @@ A simple app to fetch and store public GitHub repositories for a given user.
 - [x] Receive requests from the frontend
 - [x] Fetch repos from GitHub API
 - [x] Extract required fields from **first 5 repositories**
-- [ ] Store data (file, no-SQL, or your choice)
-- [ ] If user exists:
-  - [ ] Update the record  
-- [ ] If user does not exist:
-  - [ ] Create a new record
-- [ ] Respond with:
+- [x] Store data (file, no-SQL, or your choice)
+- [x] If user exists:
+  - [x] Update the record  
+- [x] If user does not exist:
+  - [x] Create a new record
+- [x] Respond with:
   - [x] Repo data (4 fields per repo)
-  - [ ] Whether the user is new or existing
+  - [x] Whether the user is new or existing
 
 ---
 
